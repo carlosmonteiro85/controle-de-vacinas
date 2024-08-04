@@ -25,7 +25,7 @@ pipeline {
                 script {
                     // Analisa o código com o SonarQube
                     echo "Executando análise do SonarQube"
-                    withSonarQubeEnv(installationName: 'sq1') {
+                    withSonarQubeEnv(installationName: 'sonarqube') {
                         sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=carana -Dsonar.projectName=Carana'
                     }
                 }
