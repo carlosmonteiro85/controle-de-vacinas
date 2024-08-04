@@ -59,7 +59,7 @@ pipeline {
 
                     // Executa o novo contêiner
                     echo "Executando o contêiner: ${CONTAINER_NAME}"
-                    sh "docker run -d -p 7070:770 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    sh "docker run -d -p 7070:7070 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}:${DOCKER_TAG}"
                 }
             }
         }
