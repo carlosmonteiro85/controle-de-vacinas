@@ -10,7 +10,24 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
+            steps {
+                // Realiza o checkout do código-fonte
+                checkout scm
+            }
+        }
+
+        stage('Build Jar') {
+            steps {
+                script {
+                    // Compila o projeto Maven e gera o arquivo .jar
+                    echo "Compilando o projeto e gerando o arquivo .jar"
+                    sh 'mvn clean package -DskipTests' // Usa -DskipTests para ignorar os testes, caso seja necessário
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
             steps {
                 script {
                     // Constrói a imagem Docker
@@ -25,35 +42,12 @@ pipeline {
                 script {
                     // Analisa o código com o SonarQube
                     echo "Executando análise do SonarQube"
-                    withSonarQubeEnv(installationName: 'sonarqube') {
-                        sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=carana -Dsonar.projectName=Carana'
+                    withSonarQubeEnv(SONARQUBE_SERVER) {
+                        sh 'mvn sonar:sonar -Dsonar.projectKey=carana -Dsonar.projectName=Carana'
                     }
                 }
             }
         }
-
-        //stage('Publish') {
-            //when {
-                //expression {
-                    // Publica a imagem se o registro for especificado
-                    //return env.DOCKER_REGISTRY_URL != null && env.DOCKER_REGISTRY_URL != ''
-                //}
-            //}
-            //steps {
-                //script {
-                    // Login no registro Docker (se necessário)
-                    //if (env.DOCKER_REGISTRY_CREDENTIALS) {
-                        //withCredentials([usernamePassword(credentialsId: env.DOCKER_REGISTRY_CREDENTIALS, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                            //sh "docker login -u $USERNAME -p $PASSWORD ${env.DOCKER_REGISTRY_URL}"
-                        //}
-                    //}
-
-                    // Publica a imagem Docker
-                    //echo "Publicando a imagem Docker: ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                    //sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                //}
-            //}
-        //}
 
         stage('Run') {
             steps {
