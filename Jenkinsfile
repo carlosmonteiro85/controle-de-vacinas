@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE = "85devs/carana"
         DOCKER_TAG = "v${BUILD_NUMBER}"
         CONTAINER_NAME = "carana-container"
-        SONARQUBE_SERVER = 'sonarqube-server' // Nome da instalação do SonarQube no Jenkins
+        SONARQUBE_SERVER = 'sonarqube' // Nome da instalação do SonarQube no Jenkins
     }
 
     stages {
