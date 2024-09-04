@@ -43,7 +43,7 @@ pipeline {
                     // Analisa o código com o SonarQube
                     echo "Executando análise do SonarQube"
                     withSonarQubeEnv(SONARQUBE_SERVER) {
-                        sh 'mvn sonar:sonar -Dsonar.projectKey=controle-vacina -Dsonar.host.url=http://192.168.100.3:9000 -Dsonar.login=squ_ec60b7a8913accd9d3274bf961139a0a8861ce4b'
+                        sh "mvn sonar:sonar -Dsonar.projectKey=controle-vacina -Dsonar.host.url=http://192.168.100.3:9000 -Dsonar.login=${SONAR_KEY}"
                     }
                 }
             }
